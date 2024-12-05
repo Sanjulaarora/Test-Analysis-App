@@ -154,7 +154,7 @@ export default function Home() {
                           <span className='bg-blue-950 text-white rounded-full w-6 media769:w-8 h-6 media769:h-8 text-[12px] media769:text-base text-center p-1'>2</span> 
                           <Label htmlFor='percentile' className='w-48 media690:w-56 media769:w-80 ml-1 media769:ml-2 text-[10px] media590:text-[12px] media769:text-[16px]'>Update your <span className='font-bold'>Percentile</span></Label>
                         </div>
-                        <Input id='percentile' defaultValue='90%' className='w-12 media590:w-16 media769:w-28 h-6 media769:h-8 text-[11px] media590:text-base'/>
+                        <Input id='percentile' defaultValue='90' className='w-12 media590:w-16 media769:w-28 h-6 media769:h-8 text-[11px] media590:text-base'/>
                       </div>
                       <div className='flex items-center'>
                         <div className='flex items-center'>
