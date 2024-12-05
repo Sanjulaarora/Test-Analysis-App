@@ -177,24 +177,24 @@ export default function Home() {
               <p className='font-bold text-[10px] media590:text-sm media769:text-base'>Quick Statictics</p>
               <div className='flex justify-evenly my-4'>
                 <div className='flex border-gray-400 border-solid border-r-[1px]'>
-                  <p className='h-6 media590:h-9 media769:h-12 w-6 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center pt-[1px] media590:pt-2 media769:pt-3'>🏆</p>
+                  <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>🏆</p>
                   <div className='mx-2 media590:mx-4'>
                     <p className='font-bold text-[12px] media590:text-base media769:text-lg'>1</p>
-                    <p className='text-gray-500 text-[8px] media590:text-[10px] media769:text-[14px]'>YOUR RANK</p>
+                    <p className='text-gray-500 text-[6px] media590:text-[10px] media769:text-[14px]'>YOUR RANK</p>
                   </div>
                 </div>
-                <div className='flex border-gray-400 border-solid border-r-[1px]'>
-                  <p className='h-6 media590:h-9 media769:h-12 w-6 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center pt-[1px] media590:pt-2 media769:pt-3'>📝</p>
+                <div className='flex border-gray-400 border-solid border-r-[1px] mx-[2px]'>
+                  <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>📝</p>
                   <div className='mx-1 media590:mx-4'>
                     <p className='font-bold text-[12px] media590:text-base media769:text-lg'>90%</p>
-                    <p className='text-gray-500 text-[8px] media590:text-[10px] media769:text-[14px]'>PERCENTILE</p>
+                    <p className='text-gray-500 text-[6px] media590:text-[10px] media769:text-[14px]'>PERCENTILE</p>
                   </div>
                 </div>
-                <div className='flex'>
-                  <p className='h-6 media590:h-9 media769:h-12 w-6 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center pt-[1px] media590:pt-2 media769:pt-3'>✅</p>
+                <div className='flex ml-[2px]'>
+                  <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>✅</p>
                   <div className='mx-1 media590:mx-4'>
                     <p className='font-bold text-[12px] media590:text-base media769:text-lg'>12/15</p>
-                    <p className='text-gray-500 text-[8px] media590:text-[10px] media769:text-[14px]'>CORRECT ANSWERS</p>
+                    <p className='text-gray-500 text-[6px] media590:text-[10px] media769:text-[14px]'>CORRECT ANSWERS</p>
                   </div>
                 </div>
               </div>
@@ -209,7 +209,7 @@ export default function Home() {
                 <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='text-gray-700 font-bold'>You scored 90% percentile </span>which is lower than the.</p>
                 <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'>average percentile 72%, of all the engineers who took this assessment.</p>
               </div>
-              <p className='h-6 media590:h-9 media769:h-12 w-6 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center pt-[1px] media590:pt-2 media769:pt-3'>📝</p>
+              <p className='h-6 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>📝</p>
             </div>
             <div className='mt-5'>
               <div className='px-2 sm:p-6'>
