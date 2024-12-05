@@ -209,7 +209,7 @@ export default function Home() {
                 <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='text-gray-700 font-bold'>You scored 90% percentile </span>which is lower than the.</p>
                 <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'>average percentile 72%, of all the engineers who took this assessment.</p>
               </div>
-              <p className='h-6 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>📝</p>
+              <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>📝</p>
             </div>
             <div className='mt-5'>
               <div className='px-2 sm:p-6'>
