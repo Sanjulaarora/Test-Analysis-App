@@ -60,15 +60,15 @@ export default function Home() {
 
   const barChartData = [
     { percentile: '0', desktop: 0, mobile: 0 },
-    { percentile: '25', desktop: 14, mobile: 8 },
-    { percentile: '50', desktop: 60, mobile: 40 },
-    { percentile: '75', desktop: 35, mobile: 25 },
-    { percentile: '100', desktop: 28, mobile: 28 },
+    { percentile: '25', desktop: 60, mobile: 58 },
+    { percentile: '50', desktop: 14, mobile: 60 },
+    { percentile: '75', desktop: 65, mobile: 70 },
+    { percentile: '100', desktop: 30, mobile: 19 },
   ]
 
   const barChartConfig = {
     views: {
-      label: 'Percentile Scored',
+      label: 'No. of people scoring this percentile',
     },
     desktop: {
       label: 'Desktop',
