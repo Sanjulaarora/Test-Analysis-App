@@ -33,7 +33,7 @@ export default function Home() {
   ]);
 
   React.useEffect(() => {
-    const timers = progressBars.map((_, index) =>
+    const timers = progressBars.map((progressBar, index) =>
       setTimeout(() => {
         setProgressBars((prev) => prev.map((value, i) => i === index ? {...value, progress:Math.min(value.progress + 10, 100)} : value ));
       }, 500 * (index + 1))
@@ -47,7 +47,7 @@ export default function Home() {
     { describe: 'Skipped or Incorrectly Attempted', number: 3, fill: 'var(--color-incorrectlyAttempted)' },
   ]
   
-  const chartConfig = {
+  const pieChartConfig = {
     correctlyAttempted: {
       label: 'Correctly Attempted',
       color: 'hsl(var(--chart-1))',
@@ -251,7 +251,7 @@ export default function Home() {
               <CardDescription className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='font-bold'>You have scored 12 questions correct out of 15.</span> However it still needs some improvements</CardDescription>
             </CardHeader>
             <CardContent className='flex-1 pb-0'>
-              <ChartContainer config={chartConfig} className='mx-auto aspect-square max-h-[200px] media590:max-h-[250px]'>
+              <ChartContainer config={pieChartConfig} className='mx-auto aspect-square max-h-[200px] media590:max-h-[250px]'>
                 <PieChart>
                   <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
                   <Pie data={pieChartData} dataKey='number' nameKey='describe' innerRadius={60} strokeWidth={5}/>
