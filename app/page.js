@@ -37,6 +37,7 @@ export default function Home() {
     });
   };
 
+  // Edit Function
   const handleEdit = async(id) => {
     const { rank, percentile, score } = editTest;
 
@@ -51,7 +52,6 @@ export default function Home() {
     });
 
     const data = await res.json();
-    console.log(data);
     if(res.status === 422 || !data) {
       alert('Something went wrong !');
     } else {
@@ -68,6 +68,8 @@ export default function Home() {
     });
   },[test[0]])
 
+
+  // Progress Bar Functionality
   const [progressBars, setProgressBars] = React.useState([
     {
       subject: 'HTML Tools, Forms, History',
@@ -93,31 +95,33 @@ export default function Home() {
         setProgressBars((prev) => prev.map((value, i) => i === index ? {...value, progress:Math.min(value.progress + 10, 100)} : value ));
       }, 500 * (index + 1))
     );
-
     return () => timers.forEach((timer) => clearTimeout(timer));
   }, []);
 
+
+  // Pie Chart Functionality
   const pieChartData = React.useMemo(() => {
     if (!test || test.length === 0) return [];
     const totalQuestions = 15;
     const score = test[0]?.score || 0;
     return [
-      { describe: 'Correctly Attempted', number: score, fill: 'var(--color-correctlyAttempted)' },
-      { describe: 'Skipped or Incorrectly Attempted', number: totalQuestions - score, fill: 'var(--color-incorrectlyAttempted)' },
+      { describe: 'Correctly Attempted: ', number: score, fill: 'var(--color-correctlyAttempted)' },
+      { describe: 'Skipped or Incorrectly Attempted: ', number: totalQuestions - score, fill: 'var(--color-incorrectlyAttempted)' },
     ];
   }, [test]);
 
   const pieChartConfig = {
     correctlyAttempted: {
-      label: 'Correctly Attempted',
+      label: 'Correctly Attempted: ',
       color: 'hsl(var(--chart-1))',
     },
     incorrectlyAttempted: {
-      label: 'Skipped or Incorrectly Attempted',
+      label: 'Skipped or Incorrectly Attempted: ',
       color: 'hsl(var(--chart-2))',
     },
   }
 
+  // Bar Chart Functionality
   const barChartData = [
     { percentile: '0', desktop: 0, mobile: 0 },
     { percentile: '25', desktop: 60, mobile: 58 },
@@ -144,6 +148,7 @@ export default function Home() {
 
   return (
     <main className='flex mx-5'>
+      {/* Nav for Desktop Design*/}
       <nav className='w-[16%] border-gray-300 border-solid border-r-[1px] mx-3 media769:mx-4 hidden media769:block'>
         <div>
           <ul className='flex flex-col space-y-8 mt-20'>
@@ -151,7 +156,7 @@ export default function Home() {
               <BarChart className='w-3 media769:w-6'/>
               <span className='ml-1 media769:ml-2 text-slate-500 font-bold text-sm media769:text-lg'>Dashboard</span>
             </li>
-            <li className='flex'>
+            <li className='flex bg-slate-200 p-3'>
               <FileBadge className='w-3 media769:w-6'/>
               <span className='ml-1 media769:ml-2 text-slate-500 font-bold text-sm media769:text-lg'>Skill Test</span>
             </li>
@@ -163,13 +168,14 @@ export default function Home() {
         </div>
       </nav>
 
+      {/* Nav for Tablet and Mobile Design */}
       <nav className='media769:hidden fixed bottom-0 left-0 right-0 bg-white shadow-md z-50 h-10 p-2'>
         <ul className='flex justify-around'>
           <li className='flex'>
             <BarChart className='w-3 media590:w-6'/>
             <span className='ml-1 media590:ml-2 text-slate-500 font-bold text-sm media590:text-base'>Dashboard</span>
           </li>
-          <li className='flex'>
+          <li className='flex bg-slate-300'>
             <FileBadge className='w-3 media590:w-6'/>
             <span className='ml-1 media590:ml-2 text-slate-500 font-bold text-sm media590:text-base'>Skill Test</span>
           </li>
@@ -180,8 +186,10 @@ export default function Home() {
         </ul>
       </nav>
 
-      {isLoading && <p>Fetching data...</p>}
-      {!isLoading && fetchError && <p>Error</p>}
+
+      {/* Test Data Updating */}
+      {isLoading && <p className='text-center mt-40'>Fetching data...</p>}
+      {!isLoading && fetchError && <p className='text-center mt-40'>Error</p>}
       {!isLoading && !fetchError && (test.length ? 
       <> 
       {test.map((testData) => (
@@ -235,10 +243,11 @@ export default function Home() {
             </div>
           </div>
 
-
+          
+          {/* Quick Statistics */}
           <div className='mt-5 border-gray-300 border-solid border-[1px] rounded-md p-2'>
             <div className='p-2'>
-              <p className='font-bold text-[10px] media590:text-sm media769:text-base'>Quick Statictics</p>
+              <p className='font-bold text-[10px] media590:text-sm media769:text-base'>Quick Statistics</p>
               <div className='flex justify-evenly my-4'>
                 <div className='flex border-gray-400 border-solid border-r-[1px]'>
                   <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>🏆</p>
@@ -266,11 +275,12 @@ export default function Home() {
           </div>
 
 
+          {/* Comparison Graph */}
           <div className='mt-5 border-gray-300 border-solid border-[1px] rounded-md p-6'>
             <p className='font-bold text-[10px] media590:text-sm media769:text-base'>Comparison Graph</p>
             <div className='flex mt-3'>
               <div>
-                <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='text-gray-700 font-bold'>You scored {testData.percentile}% percentile </span>which is lower than the.</p>
+                <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='text-gray-700 font-bold'>You scored {testData.percentile}% percentile </span>which is lower than the</p>
                 <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'>average percentile 72%, of all the engineers who took this assessment.</p>
               </div>
               <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>📝</p>
@@ -290,7 +300,7 @@ export default function Home() {
           </div>
         </div>
 
-
+        {/* Progress Bar */}
         <div className='mt-6 media769:mt-20 ml-4 media769:ml-40 w-[320px] media590:w-[500px] media769:w-[400px]'>
           <div className='mt-3 border-gray-300 border-solid border-[1px] rounded-md p-6'> 
             <p className='font-bold text-[10px] media590:text-sm media769:text-base'>Syllabus Wise Analysis</p>
@@ -305,7 +315,7 @@ export default function Home() {
             ))}  
           </div>
 
-
+          {/* Question Analysis */}
           <div className='flex flex-col mt-3 border-gray-300 border-solid border-[1px] rounded-md pt-3 pb-4'>
             <CardHeader>
               <CardTitle className='flex justify-between'>
@@ -325,7 +335,7 @@ export default function Home() {
           </div>
         </div>
       </div> ))}
-      </>: <p>No data for test.</p>
+      </>: <p className='text-center mt-40'>No data for test.</p>
     )}
     </main>
   );
