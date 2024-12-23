@@ -147,7 +147,7 @@ export default function Home() {
   const [activeChart, setActiveChart] = React.useState('desktop');
 
   return (
-    <main className='flex mx-5'>
+    <main className='flex'>
       {/* Nav for Desktop Design*/}
       <nav className='w-[16%] border-gray-300 border-solid border-r-[1px] mx-3 media769:mx-4 hidden media769:block'>
         <div>
@@ -158,7 +158,7 @@ export default function Home() {
             </li>
             <li className='flex bg-slate-200 p-3'>
               <FileBadge className='w-3 media769:w-6'/>
-              <span className='ml-1 media769:ml-2 text-slate-500 font-bold text-sm media769:text-lg'>Skill Test</span>
+              <span className='text-slate-500 font-bold text-sm media769:text-lg'>Skill Test</span>
             </li>
             <li className='flex'>
               <File className='w-3 media769:w-6'/>
@@ -175,7 +175,7 @@ export default function Home() {
             <BarChart className='w-3 media590:w-6'/>
             <span className='ml-1 media590:ml-2 text-slate-500 font-bold text-sm media590:text-base'>Dashboard</span>
           </li>
-          <li className='flex bg-slate-300'>
+          <li className='flex bg-slate-300 p-2'>
             <FileBadge className='w-3 media590:w-6'/>
             <span className='ml-1 media590:ml-2 text-slate-500 font-bold text-sm media590:text-base'>Skill Test</span>
           </li>
