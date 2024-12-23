@@ -11,8 +11,63 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CartesianGrid, Line, LineChart, XAxis, Pie, PieChart } from 'recharts';
 import { CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import useAxiosFetch from '@/hooks/useAxiosFetch';
 
 export default function Home() {
+  const { data, isLoading, fetchError } = useAxiosFetch('https://backend-to-do-app-j0km.onrender.com/get-test');
+  const [test, setTest] = React.useState([]);
+  
+  React.useEffect(() => {
+    setTest(data);
+  }, [data]);
+
+  const[editTest, setEditTest] = React.useState({
+    rank: "",
+    percentile: "",
+    score: ""
+  });
+
+  const editTestData = (e) => {
+    const { name, value } = e.target;
+    setEditTest(() => {
+      return {
+        ...editTest,
+        [name]: value,
+      }
+    });
+  };
+
+  const handleEdit = async(id) => {
+    const { rank, percentile, score } = editTest;
+
+    const res = await fetch(`https://backend-to-do-app-j0km.onrender.com/edit-test/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        rank, percentile, score
+      })
+    });
+
+    const data = await res.json();
+    console.log(data);
+    if(res.status === 422 || !data) {
+      alert('Something went wrong !');
+    } else {
+      alert('Test is edited successfully !');
+      setTest(test.map(testPresent => testPresent._id === id ? {...data} : testPresent));
+    }
+  }
+
+  React.useEffect(() => {
+    setEditTest({
+      rank: test[0]?.rank || 0,
+      percentile: test[0]?.percentile || 0,
+      score: test[0]?.score || 0
+    });
+  },[test[0]])
+
   const [progressBars, setProgressBars] = React.useState([
     {
       subject: 'HTML Tools, Forms, History',
@@ -42,11 +97,16 @@ export default function Home() {
     return () => timers.forEach((timer) => clearTimeout(timer));
   }, []);
 
-  const pieChartData = [
-    { describe: 'Correctly Attempted', number: 12, fill: 'var(--color-correctlyAttempted)' },
-    { describe: 'Skipped or Incorrectly Attempted', number: 3, fill: 'var(--color-incorrectlyAttempted)' },
-  ]
-  
+  const pieChartData = React.useMemo(() => {
+    if (!test || test.length === 0) return [];
+    const totalQuestions = 15;
+    const score = test[0]?.score || 0;
+    return [
+      { describe: 'Correctly Attempted', number: score, fill: 'var(--color-correctlyAttempted)' },
+      { describe: 'Skipped or Incorrectly Attempted', number: totalQuestions - score, fill: 'var(--color-incorrectlyAttempted)' },
+    ];
+  }, [test]);
+
   const pieChartConfig = {
     correctlyAttempted: {
       label: 'Correctly Attempted',
@@ -61,7 +121,7 @@ export default function Home() {
   const barChartData = [
     { percentile: '0', desktop: 0, mobile: 0 },
     { percentile: '25', desktop: 60, mobile: 58 },
-    { percentile: '50', desktop: 14, mobile: 60 },
+    { percentile: '50', desktop: test[0]?.percentile || 0, mobile: 60 },
     { percentile: '75', desktop: 65, mobile: 70 },
     { percentile: '100', desktop: 30, mobile: 19 },
   ]
@@ -120,8 +180,12 @@ export default function Home() {
         </ul>
       </nav>
 
-
-      <div className='max-w-full media769:w-[84%] grid grid-cols-1 xl:grid-cols-2 mx-auto media769:mx-0'>
+      {isLoading && <p>Fetching data...</p>}
+      {!isLoading && fetchError && <p>Error</p>}
+      {!isLoading && !fetchError && (test.length ? 
+      <> 
+      {test.map((testData) => (
+      <div className='max-w-full media769:w-[84%] grid grid-cols-1 xl:grid-cols-2 mx-auto media769:mx-0' key={testData._id}>
         <div className='mt-8 ml-4 media769:ml-8 w-[320px] media590:w-[500px] media769:w-[680px]'>
           <p className='text-gray-800 text-[12px] media590:text-base'>Skill Test</p>
           <div className='mt-7 media769:mt-9 border-gray-300 border-solid border-[1px] rounded-md p-[5px]'>
@@ -147,23 +211,23 @@ export default function Home() {
                           <span className='bg-blue-950 text-white rounded-full w-6 media769:w-8 h-6 media769:h-8 text-[12px] media769:text-base text-center p-1'>1</span> 
                           <Label htmlFor='rank' className='w-48 media690:w-56 media769:w-80 ml-1 media769:ml-2 text-[10px] media590:text-[12px] media769:text-[16px]'>Update your <span className='font-bold'>Rank</span></Label>
                         </div>
-                        <Input id='rank' defaultValue='1' className='w-12 media590:w-16 media769:w-28 h-6 media769:h-8 text-[11px] media590:text-base'/>
+                        <Input id='rank' value={editTest.rank} onChange={editTestData} className='w-12 media590:w-16 media769:w-28 h-6 media769:h-8 text-[11px] media590:text-base' name='rank'/>
                       </div>
                       <div className='flex items-center'>
                         <div className='flex items-center'>
                           <span className='bg-blue-950 text-white rounded-full w-6 media769:w-8 h-6 media769:h-8 text-[12px] media769:text-base text-center p-1'>2</span> 
                           <Label htmlFor='percentile' className='w-48 media690:w-56 media769:w-80 ml-1 media769:ml-2 text-[10px] media590:text-[12px] media769:text-[16px]'>Update your <span className='font-bold'>Percentile</span></Label>
                         </div>
-                        <Input id='percentile' defaultValue='90' className='w-12 media590:w-16 media769:w-28 h-6 media769:h-8 text-[11px] media590:text-base'/>
+                        <Input id='percentile' value={editTest.percentile} onChange={editTestData} className='w-12 media590:w-16 media769:w-28 h-6 media769:h-8 text-[11px] media590:text-base' name='percentile'/>
                       </div>
                       <div className='flex items-center'>
                         <div className='flex items-center'>
                           <span className='bg-blue-950 text-white rounded-full w-6 media769:w-8 h-6 media769:h-8 text-[12px] media769:text-base text-center p-1'>3</span> 
                           <Label htmlFor='currentScore' className='w-48 media690:w-56 media769:w-80 ml-1 media769:ml-2 text-[10px] media590:text-[12px] media769:text-[16px]'>Update your <span className='font-bold'>Current Score (out of 15)</span></Label>
                         </div>
-                        <Input id='currentScore' defaultValue='12' className='w-12 media590:w-16 media769:w-28 h-6 media769:h-8 text-[11px] media590:text-base'/>
+                        <Input id='currentScore' value={editTest.score} onChange={editTestData} className='w-12 media590:w-16 media769:w-28 h-6 media769:h-8 text-[11px] media590:text-base' name='score'/>
                       </div>
-                      <Button variant='primary' className='p-3 media769:p-6 ml-[220px] media590:ml-[250px] media769:ml-96 bg-blue-950 text-white w-12 media590:w-16 media769:w-24 h-4 media590:h-9 media769:h-12 text-[8px] media590:text-base'>Save</Button>
+                      <Button variant='primary' className='p-3 media769:p-6 ml-[220px] media590:ml-[250px] media769:ml-96 bg-blue-950 text-white w-12 media590:w-16 media769:w-24 h-4 media590:h-9 media769:h-12 text-[8px] media590:text-base' onClick={() => handleEdit(testData._id)}>Save</Button>
                     </div>
                   </div>
                 </PopoverContent>
@@ -179,21 +243,21 @@ export default function Home() {
                 <div className='flex border-gray-400 border-solid border-r-[1px]'>
                   <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>🏆</p>
                   <div className='mx-2 media590:mx-4'>
-                    <p className='font-bold text-[12px] media590:text-base media769:text-lg'>1</p>
+                    <p className='font-bold text-[12px] media590:text-base media769:text-lg'>{testData.rank}</p>
                     <p className='text-gray-500 text-[6px] media590:text-[10px] media769:text-[14px]'>YOUR RANK</p>
                   </div>
                 </div>
                 <div className='flex border-gray-400 border-solid border-r-[1px] mx-[2px]'>
                   <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>📝</p>
                   <div className='mx-1 media590:mx-4'>
-                    <p className='font-bold text-[12px] media590:text-base media769:text-lg'>90%</p>
+                    <p className='font-bold text-[12px] media590:text-base media769:text-lg'>{testData.percentile}%</p>
                     <p className='text-gray-500 text-[6px] media590:text-[10px] media769:text-[14px]'>PERCENTILE</p>
                   </div>
                 </div>
                 <div className='flex ml-[2px]'>
                   <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>✅</p>
                   <div className='mx-1 media590:mx-4'>
-                    <p className='font-bold text-[12px] media590:text-base media769:text-lg'>12/15</p>
+                    <p className='font-bold text-[12px] media590:text-base media769:text-lg'>{testData.score}/15</p>
                     <p className='text-gray-500 text-[6px] media590:text-[10px] media769:text-[14px]'>CORRECT ANSWERS</p>
                   </div>
                 </div>
@@ -206,7 +270,7 @@ export default function Home() {
             <p className='font-bold text-[10px] media590:text-sm media769:text-base'>Comparison Graph</p>
             <div className='flex mt-3'>
               <div>
-                <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='text-gray-700 font-bold'>You scored 90% percentile </span>which is lower than the.</p>
+                <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='text-gray-700 font-bold'>You scored {testData.percentile}% percentile </span>which is lower than the.</p>
                 <p className='text-gray-700 text-[10px] media590:text-sm media769:text-base'>average percentile 72%, of all the engineers who took this assessment.</p>
               </div>
               <p className='h-7 media590:h-9 media769:h-12 w-7 media590:w-9 media769:w-12 bg-gray-300 rounded-full text-center media590:pt-2 media769:pt-3'>📝</p>
@@ -246,9 +310,9 @@ export default function Home() {
             <CardHeader>
               <CardTitle className='flex justify-between'>
                 <p className='font-bold text-[10px] media590:text-sm media769:text-base'>Question Analysis</p>
-                <p className='font-bold text-blue-700 text-[10px] media590:text-sm media769:text-base'>12/15</p>
+                <p className='font-bold text-blue-700 text-[10px] media590:text-sm media769:text-base'>{testData.score}/15</p>
               </CardTitle>
-              <CardDescription className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='font-bold'>You have scored 12 questions correct out of 15.</span> However it still needs some improvements</CardDescription>
+              <CardDescription className='text-gray-700 text-[10px] media590:text-sm media769:text-base'><span className='font-bold'>You have scored {testData.score} questions correct out of 15.</span> However it still needs some improvements</CardDescription>
             </CardHeader>
             <CardContent className='flex-1 pb-0'>
               <ChartContainer config={pieChartConfig} className='mx-auto aspect-square max-h-[200px] media590:max-h-[250px]'>
@@ -260,7 +324,9 @@ export default function Home() {
             </CardContent>
           </div>
         </div>
-      </div> 
+      </div> ))}
+      </>: <p>No data for test.</p>
+    )}
     </main>
   );
 }
